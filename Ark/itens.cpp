@@ -9,7 +9,7 @@ void ClearItems() {
     }
 }
 
-void TrySpawnItem(Rectangle origem) {//cria os itens 
+void SpawnItem(Rectangle origem) {//cria os itens 
     int chance = GetRandomValue(0, 99);
     if (chance > 30) return; // 30% de chance
 
@@ -68,8 +68,7 @@ void AtualizarItens(float screenHeight, Rectangle& paddleRect, int& vidas, Vecto
                     if (plataformaTamanho.x > 220.0f)//maximo de 220
                         plataformaTamanho.x = 220.0f;
                     if (plataformaPosicao.x > screenWidth - (plataformaTamanho.x + 10))
-                        plataformaPosicao.x = screenWidth - (plataformaTamanho.x + 10);
-                    plataformaPosicaoFim.x = plataformaPosicao.x + plataformaTamanho.x;
+                        plataformaPosicao.x = screenWidth - (plataformaTamanho.x + 10);plataformaPosicaoFim.x = plataformaPosicao.x + plataformaTamanho.x;
                     break;
 
                 case ITEM_PAD_DOWN:

@@ -29,7 +29,7 @@ extern Item itens[MAX_ITENS];
 void ClearItems();
 
 // Chamada ao quebrar um bloco -> tenta spawnar item
-void TrySpawnItem(Rectangle origem);
+void SpawnItem(Rectangle origem);
 
 // Atualiza queda, colisão com o paddle e aplica efeitos
 void AtualizarItens(float screenHeight, Rectangle& paddleRect, int& vidas, Vector2& plataformaPosicao, Vector2& plataformaTamanho, Vector2& plataformaPosicaoFim, int screenWidth, int& scoreAtual);
