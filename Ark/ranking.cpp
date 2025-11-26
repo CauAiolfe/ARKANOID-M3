@@ -4,47 +4,62 @@
 
 using namespace std;
 
-string Trim(const string& s) {
-    size_t start = s.find_first_not_of(" \t\r\n");
-    if (start == string::npos) return "";
-    size_t end = s.find_last_not_of(" \t\r\n");
-    return s.substr(start, end - start + 1);
-}
+// nome fixo do arquivo de ranking
+static const char* ARQUIVO_RANKING = "ranking.txt";
 
-vector<Score> LerRankingTop5(const string& arquivo) {
+// lê o arquivo de ranking e devolve um vetor com, no máximo, top 5
+vector<Score> LerRankingTop5() {
     vector<Score> scores;
-    ifstream arq(arquivo);
-    if (!arq.is_open()) return scores;
+
+    ifstream arq(ARQUIVO_RANKING);
+    if (!arq.is_open()) {
+        // se o arquivo ainda não existe, só retorna vazio
+        return scores;
+    }
 
     string linha;
     while (getline(arq, linha)) {
+        // ignora linhas vazias
         if (linha.empty()) continue;
+
+        // procura o '-' que separa nome e pontos
         size_t pos = linha.rfind('-');
-        if (pos == string::npos) continue;
+        if (pos == string::npos) continue; // linha fora do formato, ignora
 
-        string nome      = Trim(linha.substr(0, pos));
-        string pontosStr = Trim(linha.substr(pos + 1));
+        // separa nome e pontos 
+        string nome      = linha.substr(0, pos);      
+        string pontosStr = linha.substr(pos + 1);    
+        // remove espaços no começo 
+        while (!pontosStr.empty() && (pontosStr[0] == ' ' || pontosStr[0] == '\t'))
+            pontosStr.erase(0, 1);
 
-        try {
-            int pts = stoi(pontosStr);
+        // se depois disso ainda tiver algo, tenta converter para int
+        if (!pontosStr.empty()) {
+            int pts = stoi(pontosStr); // aqui assumimos que é número válido
             scores.push_back({ nome, pts });
-        } catch (...) {
-            // linha zoada, ignora
         }
     }
+
     arq.close();
 
+    // ordena do maior para o menor
     sort(scores.begin(), scores.end(),
          [](const Score& a, const Score& b) {
-             return a.pontos > b.pontos; // maior primeiro
+             return a.pontos > b.pontos;
          });
 
-    if (scores.size() > 5) scores.resize(5);
+    // deixa só os 5 primeiros, se tiver mais que 5
+    if (scores.size() > 5) {
+        scores.resize(5);
+    }
+
     return scores;
 }
 
-void SalvarRanking(const string& nome, int pontos, const string& arquivo) {
-    ofstream arq(arquivo, ios::app); // append
+// salva uma nova linha no ranking
+void SalvarRanking(const string& nome, int pontos) {
+    ofstream arq(ARQUIVO_RANKING, ios::app); // append = acrescenta no final
+
     if (arq.is_open()) {
         arq << nome << " - " << pontos << "\n";
         arq.close();

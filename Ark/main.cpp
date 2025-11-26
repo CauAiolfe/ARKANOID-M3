@@ -13,33 +13,33 @@ using namespace std;
 int  faseAtual          = 1;
 int  faseMensagem       = 1;
 const int TOTAL_FASES   = 3;
-bool telaTransicaoFase  = false;
+bool telaTransicaoFase  = false;//aitva quando finaliza a fase
 
-// Plataforma (player)
-Vector2 plataformaPosicao     = {350.0f, 550.0f};
-Vector2 plataformaPosicaoFim  = {450.0f, 550.0f};
-Vector2 plataformaTamanho     = {100.0f, 20.0f};
-Color   cor                   = MAROON;
+// Plataforma (player) tamanho da plataforma 
+Vector2 plataformaPosicao     = {350.0f, 550.0f};//ponto esquerdo 
+Vector2 plataformaPosicaoFim  = {450.0f, 550.0f};//ponto direito 
+Vector2 plataformaTamanho     = {100.0f, 20.0f};//largura e algura
+Color   cor                   = MAROON; // cor da plataforma
 
-// Pelota
-Vector2 bolaPosicao        = {400.0f, 539.0f};
+// Bola
+Vector2 bolaPosicao        = {400.0f, 539.0f};//posição inicial da bola.
 
 // Movimentação da bola
-int   direcao         = -1;
-int   diagonal        = 1;
-float bolaVelocidadeY = SPEEDBOLA;
+int   direcao         = -1; //direção inicial vertical -1==y diminiu 1==y aumenta
+int   diagonal        = 1; //lado inicial da diagonal
+float bolaVelocidadeY = SPEEDBOLA;//velocidade da bola
 float bolaVelocidadeX = SPEEDBOLA;
-bool  moveDiagonal    = false;
+bool  moveDiagonal    = false; //se vai movimentar para a diagonal 
 
 // Estados do jogo
-bool gameOver        = false;
-bool telaNome        = false;
-bool telaDificuldade = true;
+bool gameOver        = false; 
+bool telaNome        = false; 
+bool telaDificuldade = true;//tela inicial  
 
 // Pontuação e vidas
-int blocosQuebrados = 0;
-int framesJogando   = 0;
-int pontuacaoFinal  = 0;
+int blocosQuebrados = 0; //quantidade de blocos quebrados
+int framesJogando   = 0; //tempo de jogo baseado em FPS
+int pontuacaoFinal  = 0; //pontuação final 
 int scoreAtual      = 0;  // score em tempo real (pontos + itens)
 int vidas           = 3;  // vidas cumulativas
 
@@ -50,7 +50,7 @@ string nomeJogador = "";
 Dificuldade dificuldadeAtual = FACIL;
 
 // Reinicia o jogo (posições, blocos). Se resetTotais = true, zera pontuações e volta pra fase 1.
-void ResetGame(Blocos blocos[QUANTIDADELINHASBLOCOS][QUANTIDADEBLOCOS], bool resetTotais) {
+void ResetGame(Blocos blocos[QUANTIDADELINHASBLOCOS][QUANTIDADEBLOCOS], bool resetTotais) {//true novo jogo zera pontuação / false proxima fase e mantem os pontos
     if (resetTotais) {
         blocosQuebrados = 0;
         framesJogando   = 0;
@@ -61,7 +61,7 @@ void ResetGame(Blocos blocos[QUANTIDADELINHASBLOCOS][QUANTIDADEBLOCOS], bool res
         faseMensagem    = 1;
     }
 
-    GameConfig cfg = GetConfig(dificuldadeAtual);
+    GameConfig cfg = GetConfig(dificuldadeAtual);//devolve as configs do jogo de acordo com a dificuldade
 
     // Tamanho da plataforma conforme dificuldade
     plataformaTamanho = { cfg.larguraPlataforma, 20.0f };
@@ -77,19 +77,17 @@ void ResetGame(Blocos blocos[QUANTIDADELINHASBLOCOS][QUANTIDADEBLOCOS], bool res
     moveDiagonal     = false;
 
     ClearItems();                // do módulo de itens
-    ConfigurarFase(blocos,       // do módulo de fases
-                   faseAtual,
-                   cfg);
+    ConfigurarFase(blocos, faseAtual, cfg);
 }
 
 int main() {
     const int screenWidth  = 800;
     const int screenHeight = 600;
 
-    InitWindow(screenWidth, screenHeight, "Arkanoid - Raylib");
+    InitWindow(screenWidth, screenHeight, "Arkanoid");
     SetTargetFPS(60);
 
-    // ===== FUNDO DE ESTRELAS =====
+    // fundo de estrelas cria 200 posições para estrelas
     static Vector2 estrelas[200];
     static bool estrelasInit = false;
 
@@ -99,13 +97,13 @@ int main() {
     Blocos blocos[QUANTIDADELINHASBLOCOS][QUANTIDADEBLOCOS];
     ResetGame(blocos, true);
 
-    while (true) {
+    while (true) { // LOOP PRINCIPAL!!
 
         if (WindowShouldClose()) break;
-        if (IsKeyPressed(KEY_ESCAPE)) break;
+        if (IsKeyPressed(KEY_ESCAPE)) break;//se apertar ESC sai 
 
         // Inicializa as estrelas uma vez
-        if (!estrelasInit) {
+        if (!estrelasInit) {//preenche com 200 estrelas
             for (int i = 0; i < 200; i++) {
                 estrelas[i] = {
                     (float)GetRandomValue(0, screenWidth),
@@ -115,8 +113,8 @@ int main() {
             estrelasInit = true;
         }
 
-        // ===================== TELA DE DIFICULDADE =====================
-        if (telaDificuldade) {
+        //  tela de dificuldade
+        if (telaDificuldade) {//se estiver na tela de dificuldade
 
             if (IsKeyPressed(KEY_UP) || IsKeyPressed(KEY_W)) {
                 dificuldadeAtual = (Dificuldade)((((int)dificuldadeAtual) + 2) % 3); // sobe

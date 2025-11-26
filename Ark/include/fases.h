@@ -32,8 +32,6 @@ struct GameConfig {
 GameConfig GetConfig(Dificuldade d);
 
 // Monta o layout de blocos da fase atual
-void ConfigurarFase(Blocos blocos[QUANTIDADELINHASBLOCOS][QUANTIDADEBLOCOS],
-                    int faseAtual,
-                    const GameConfig& cfg);
+void ConfigurarFase(Blocos blocos[QUANTIDADELINHASBLOCOS][QUANTIDADEBLOCOS], int faseAtual, const GameConfig& cfg);
 
 #endif

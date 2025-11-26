@@ -22,7 +22,7 @@ struct Item {
 
 const int MAX_ITENS = 30;
 
-// Array global de itens (definido em itens.cpp)
+// "extern" é usado para mostrar que não foi criado aqui foi trago de itens.cpp
 extern Item itens[MAX_ITENS];
 
 // Zera todos os itens
@@ -32,13 +32,6 @@ void ClearItems();
 void TrySpawnItem(Rectangle origem);
 
 // Atualiza queda, colisão com o paddle e aplica efeitos
-void AtualizarItens(float screenHeight,
-                    Rectangle& paddleRect,
-                    int& vidas,
-                    Vector2& plataformaPosicao,
-                    Vector2& plataformaTamanho,
-                    Vector2& plataformaPosicaoFim,
-                    int screenWidth,
-                    int& scoreAtual);
+void AtualizarItens(float screenHeight, Rectangle& paddleRect, int& vidas, Vector2& plataformaPosicao, Vector2& plataformaTamanho, Vector2& plataformaPosicaoFim, int screenWidth, int& scoreAtual);
 
 #endif
