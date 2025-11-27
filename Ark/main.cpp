@@ -457,21 +457,7 @@ int main(){
                 case MEDIO: textoDif = "MEDIO"; break;
                 case DIFICIL: textoDif = "DIFICIL"; break;
             }
-            DrawText(TextFormat("Dificuldade: %s", textoDif), 20, 50, 20, GRAY);//desenha qual e a dificuldade atual
-            DrawText(TextFormat("Fase: %d/%d", faseAtual, TOTAL_FASES),
-                     20, 80, 20, GRAY);//desenha o numero da fase atual
-
-            DrawText(TextFormat("Vidas: %d", vidas),
-                     20, 110, 20, RED);//desenha quantas vidas restam
-
-            DrawText(TextFormat("Blocos quebrados: %d", blocosQuebrados),
-                     550, 20, 20, RAYWHITE);//desenha o numero de blocos destruidos
-            DrawText(TextFormat("Tempo: %.1fs", framesJogando / 60.0f),
-                     550, 50, 20, RAYWHITE);//desenha o tempo de jogo em segundos (frames / 60)
-
-            DrawText(TextFormat("Score: %d", scoreAtual),
-                     550, 80, 20, SKYBLUE);//desenha o score atual
-
+            
             for (int i = 0; i < QUANTIDADELINHASBLOCOS; i++){//percorre todas as linhas de blocos
                 for (int j = 0; j < QUANTIDADEBLOCOS; j++){//percorre todas as colunas de blocos
                     if (!blocos[i][j].ativo) continue;//se o bloco nao esta ativo, pula
@@ -482,7 +468,22 @@ int main(){
                                   blocos[i][j].bloco.height,
                                   blocos[i][j].cor);
                 }
+                DrawText(TextFormat("Dificuldade: %s", textoDif), 20, 20, 20, RAYWHITE);//desenha qual e a dificuldade atual
+            DrawText(TextFormat("Fase: %d/%d", faseAtual, TOTAL_FASES),
+                     20, 50, 20, RAYWHITE);//desenha o numero da fase atual
+
+            DrawText(TextFormat("Vidas: %d", vidas),
+                     20, 80, 20, RED);//desenha quantas vidas restam
+
+            DrawText(TextFormat("Blocos quebrados: %d", blocosQuebrados),
+                     550, 20, 20, RAYWHITE);//desenha o numero de blocos destruidos
+            DrawText(TextFormat("Tempo: %.1fs", framesJogando / 60.0f),
+                     550, 50, 20, RAYWHITE);//desenha o tempo de jogo em segundos (frames / 60)
+
+            DrawText(TextFormat("Score: %d", scoreAtual),
+                     550, 80, 20, SKYBLUE);//desenha o score atual
             }
+            
 
             //desenha itens especiais
             for (int k = 0; k < MAX_ITENS; k++){//percorre o array global de itens
